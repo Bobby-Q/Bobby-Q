@@ -376,3 +376,32 @@ APP_KEY=base64:paste-the-generated-key-here
 ```
 
 After changing `.env`, refresh the live URL. If the URL still shows the provider 404, continue fixing the document root first because Laravel is still not being reached.
+
+## Server check URLs
+
+The repository includes two small no-secret diagnostic scripts that do not boot Laravel:
+
+```text
+server-check.php
+public/server-check.php
+```
+
+After cPanel pulls the latest files, test these URLs:
+
+```text
+https://suite.maur.co.ke/git/server-check.php
+https://suite.maur.co.ke/git/public/server-check.php
+```
+
+Expected result: a plain text response beginning with `Loan Suite server check: OK` or `Loan Suite public server check: OK`.
+
+If both URLs still return the hosting provider's 404 page, Apache is not serving the Git deployment folder. Fix the cPanel document root or move the Git deployment into the folder that the subdomain serves.
+
+If a server-check URL works, read the `yes`/`no` checks it prints:
+
+- `php_83_or_newer` must be `yes`.
+- `env_file` must be `yes`.
+- `app_key_present` must be `yes`.
+- `vendor_autoload` must be `yes` for the real Laravel app to boot.
+
+These scripts do not print secret values. They only print whether required files/settings are present.
