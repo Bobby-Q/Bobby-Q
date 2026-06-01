@@ -53,3 +53,16 @@ We do not need integration keys for this first scaffold. Later phases may need:
 - Payment provider credentials, such as M-Pesa/SasaPay or bank integrations.
 - Object storage credentials for secure borrower document uploads.
 - Optional AI provider credentials if an assistant/reporting feature is approved.
+
+## M-Pesa Daraja integration
+
+The payments phase starts with Daraja STK Push for customer-initiated loan repayments and collections. The integration uses:
+
+- OAuth client credentials for Daraja access tokens.
+- STK Push requests for customer phone prompts.
+- A public `/mpesa/stk/callback` endpoint for Safaricom callbacks.
+- `payment_requests` to track requested, paid, and failed prompts.
+- `payments` records when callbacks can be matched to a borrower/loan.
+- `audit_logs` for STK requests, callbacks, and unmatched callbacks.
+
+Required environment values are documented in `.env.example`, `.env.production.example`, and `.env.cpanel-git.example`.

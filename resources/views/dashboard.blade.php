@@ -26,7 +26,7 @@
                     'Dashboard', 'Borrowers', 'Loan Products', 'Loans', 'Approvals', 'Collections',
                     'Accounts', 'Payments', 'Reports', 'SMS', 'Users', 'Settings'
                 ] as $item)
-                    <a class="nav-link {{ $loop->first ? 'active' : '' }}" href="#">{{ $item }}</a>
+                    <a class="nav-link {{ $loop->first ? 'active' : '' }}" href="{{ $item === 'Payments' ? route('payments.mpesa.create') : '#' }}">{{ $item }}</a>
                 @endforeach
             </nav>
         </aside>

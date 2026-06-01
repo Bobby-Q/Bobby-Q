@@ -7,8 +7,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['loan_id', 'borrower_id', 'received_by', 'reference', 'amount', 'method', 'paid_at', 'status', 'metadata'])]
-class Payment extends Model
+#[Fillable([
+    'loan_id',
+    'borrower_id',
+    'requested_by',
+    'provider',
+    'method',
+    'phone_number',
+    'amount',
+    'account_reference',
+    'description',
+    'merchant_request_id',
+    'checkout_request_id',
+    'status',
+    'result_code',
+    'result_description',
+    'raw_request',
+    'raw_response',
+    'raw_callback',
+    'paid_at',
+])]
+class PaymentRequest extends Model
 {
     use HasFactory;
 
@@ -16,8 +35,10 @@ class Payment extends Model
     {
         return [
             'amount' => 'decimal:2',
+            'raw_request' => 'array',
+            'raw_response' => 'array',
+            'raw_callback' => 'array',
             'paid_at' => 'datetime',
-            'metadata' => 'array',
         ];
     }
 
@@ -31,8 +52,8 @@ class Payment extends Model
         return $this->belongsTo(Borrower::class);
     }
 
-    public function receiver(): BelongsTo
+    public function requester(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'received_by');
+        return $this->belongsTo(User::class, 'requested_by');
     }
 }

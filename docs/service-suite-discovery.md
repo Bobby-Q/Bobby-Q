@@ -906,3 +906,23 @@ The first working MVP should include:
 - Users, roles, and audit logs.
 
 Inventory, cash sales, SMS billing, AI assistant, bulk payment approvals, and advanced accounting can come after the core lending workflow is stable.
+
+## Implementation progress - payments phase
+
+The current Loan Suite implementation has started the Payments module from the discovery findings:
+
+- Added M-Pesa Daraja STK Push configuration for sandbox and production environments.
+- Added authenticated `/payments/mpesa` screen for sending customer STK Push requests.
+- Added public `/mpesa/stk/callback` endpoint for Safaricom Daraja callbacks.
+- Added `PaymentRequest` tracking for pending, requested, paid, and failed STK Push requests.
+- Added callback reconciliation that can create a posted `Payment` when the request is linked to a borrower.
+- Added audit logging for outgoing STK requests, matched callbacks, and unmatched callbacks.
+- Added security tests for CSP, clickjacking protection, MIME sniffing protection, permissions policy, and HSTS behind HTTPS/proxy headers.
+
+Remaining payment work from discovery:
+
+- Full merchant/shop payment method management.
+- C2B validation/confirmation URL registration for Paybill/Till flows.
+- Payment approval batches and rejection workflows.
+- Suspended transaction matching for unmatched M-Pesa receipts.
+- Ledger entries for posted payments and accounting reconciliation.
