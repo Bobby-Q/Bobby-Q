@@ -1,0 +1,8 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # cPanel Git deployments sometimes expose the repository folder directly
+    # (for example /git). Send browser requests to Laravel's public front
+    # controller instead of showing a directory 404.
+    RewriteRule ^$ public/ [L,R=302]
+</IfModule>
