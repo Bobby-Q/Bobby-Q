@@ -51,6 +51,18 @@ DB_PASSWORD=your-secret-password
 
 If the repository is deployed into a web-accessible cPanel folder such as `/git`, requests must be routed into Laravel's `public/` folder. This repo includes a root redirect helper for that case, and `public/index.php` now shows a clear deployment checklist when Composer dependencies are missing instead of a blank 500 error. Full Laravel functionality still requires PHP 8.3+, installed Composer dependencies, a real `APP_KEY`, and the correct hosted `APP_URL`. Use `.env.cpanel-git.example` while the app is hosted at `/git/public`, and see `docs/cpanel-deployment.md` for the no-terminal options, provider-404 troubleshooting, server-check URLs, the static dashboard preview, and no-terminal `APP_KEY` generation.
 
+## First admin user
+
+The database seeder creates the first administrator from these environment values:
+
+```dotenv
+ADMIN_NAME="Loan Suite Admin"
+ADMIN_EMAIL=admin@loansuite.local
+ADMIN_PASSWORD=ChangeMe#2026
+```
+
+Change these in the server `.env` before running seeders in production. Then sign in at `/login`.
+
 ## Documentation
 
 - [`docs/service-suite-discovery.md`](docs/service-suite-discovery.md) - notes from the authenticated exploration of the reference application.

@@ -17,7 +17,7 @@
                 <span class="brand-mark">{L}</span>
                 <div>
                     <strong>Loan Suite</strong>
-                    <small>Microfinance OS</small>
+                    <small>{{ auth()->user()->email }}</small>
                 </div>
             </div>
 
@@ -39,7 +39,11 @@
                 </div>
                 <div class="topbar-actions">
                     <span class="status-pill">Secure Laravel + MySQL foundation</span>
-                    <span class="avatar">BQ</span>
+                    <span class="avatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="logout-button" type="submit">Logout</button>
+                    </form>
                 </div>
             </header>
 
