@@ -322,3 +322,57 @@ ASSET_URL=https://suite.maur.co.ke
 ```
 
 A wrong `APP_URL` normally causes incorrect links/assets/redirects, not a blank HTTP 500. For the current 500, first confirm that the latest Git branch has been pulled to cPanel, `vendor/autoload.php` exists, `APP_KEY` is not blank, and the selected PHP version is 8.3+.
+
+## Live 404 after Git pull
+
+If these URLs all return the hosting provider's plain 404 page:
+
+```text
+https://suite.maur.co.ke/git/
+https://suite.maur.co.ke/git/public/
+https://suite.maur.co.ke/git/public/index.php
+```
+
+then the request is not reaching this Laravel repository at all. That is different from a Laravel 404 or a Laravel 500.
+
+In that situation, changing `.env` values such as `APP_URL` or `APP_KEY` will not fix the 404, because Apache is not loading `index.php` from the repository. First confirm the cPanel web document root and the Git deployment path are the same location.
+
+Use cPanel File Manager to verify all of these files exist under the folder that the URL is supposed to serve:
+
+```text
+git/index.php
+git/.htaccess
+git/public/index.php
+git/public/.htaccess
+git/composer.json
+```
+
+If `https://suite.maur.co.ke/git/public/index.php` is still a provider 404 even though those files exist, the subdomain document root is pointing somewhere else. Fix one of these in cPanel:
+
+1. Set the subdomain document root to the folder that contains the `git` directory, then use `https://suite.maur.co.ke/git/public/`.
+2. Preferably set the subdomain document root directly to the repository's `public` folder, then use `https://suite.maur.co.ke/`.
+3. If cPanel Git cloned the repository outside the web root, copy or deploy the repository into the actual subdomain document root.
+
+A correct deployment should behave like this:
+
+- A missing Composer install or blank `APP_KEY` shows the custom "Loan Suite is on the server" deployment checklist.
+- A wrong route inside Laravel shows a Laravel-rendered page.
+- A plain provider 404 means the URL path does not map to the deployed files.
+
+## Generating `APP_KEY` without cPanel Terminal
+
+Do not commit the real production `APP_KEY` to Git. Generate it outside the repository and paste it only into the server `.env` file.
+
+If you cannot run `php artisan key:generate` in cPanel Terminal, you can generate a compatible key on any machine with PHP:
+
+```bash
+php -r 'echo "base64:".base64_encode(random_bytes(32)).PHP_EOL;'
+```
+
+Then paste the result into the server `.env`:
+
+```dotenv
+APP_KEY=base64:paste-the-generated-key-here
+```
+
+After changing `.env`, refresh the live URL. If the URL still shows the provider 404, continue fixing the document root first because Laravel is still not being reached.
