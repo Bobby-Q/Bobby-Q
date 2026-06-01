@@ -56,6 +56,11 @@
                     <div class="metric"><span>Portfolio Quality</span><strong>100%</strong></div>
                 </div>
 
+                <h2>Preview the dashboard now</h2>
+                <div class="next">
+                    You can view the static dashboard preview while Composer dependencies, <code>APP_KEY</code>, and production setup are completed: <a href="dashboard-preview.html">Open dashboard preview</a>.
+                </div>
+
                 <h2>Recommended no-terminal deployment path</h2>
                 <div class="next">
                     Build the release on a machine that has Composer and Node, upload the generated archive through cPanel File Manager, then extract it into the app folder. The repository includes <code>scripts/build-cpanel-release.sh</code> for that packaging workflow.

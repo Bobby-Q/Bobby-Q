@@ -405,3 +405,13 @@ If a server-check URL works, read the `yes`/`no` checks it prints:
 - `vendor_autoload` must be `yes` for the real Laravel app to boot.
 
 These scripts do not print secret values. They only print whether required files/settings are present.
+
+## Static dashboard preview while Laravel setup is incomplete
+
+If `https://suite.maur.co.ke/git/public/` shows the deployment checklist, the repository is reachable but Laravel still cannot boot. You can still view the first dashboard UI without Composer or Laravel by opening:
+
+```text
+https://suite.maur.co.ke/git/public/dashboard-preview.html
+```
+
+This is a static preview only. It is useful for visual review while cPanel dependencies, `APP_KEY`, and the final document root are being fixed. The real application remains the Laravel route at `/` once all server checks pass.
