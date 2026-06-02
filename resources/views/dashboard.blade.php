@@ -26,7 +26,7 @@
                     'Dashboard', 'Borrowers', 'Loan Products', 'Loans', 'Approvals', 'Collections',
                     'Accounts', 'Payments', 'Reports', 'SMS', 'Users', 'Settings'
                 ] as $item)
-                    <a class="nav-link {{ $loop->first ? 'active' : '' }}" href="{{ $item === 'Payments' ? route('payments.mpesa.create') : '#' }}">{{ $item }}</a>
+                    <a class="nav-link {{ $loop->first ? 'active' : '' }}" href="{{ match ($item) { 'Dashboard' => route('dashboard'), 'Borrowers' => route('borrowers.index'), 'Loan Products' => route('loan-products.index'), 'Payments' => route('payments.mpesa.create'), default => '#' } }}">{{ $item }}</a>
                 @endforeach
             </nav>
         </aside>
@@ -49,10 +49,10 @@
 
             <section class="metrics-grid" aria-label="Portfolio metrics">
                 @foreach ([
-                    ['label' => 'Borrowers', 'value' => '76', 'note' => 'Active customer records'],
-                    ['label' => 'Active Loans', 'value' => '1', 'note' => 'Currently disbursed'],
-                    ['label' => 'OLB Total', 'value' => 'Ksh51.12', 'note' => 'Outstanding loan balance'],
-                    ['label' => 'Portfolio Quality', 'value' => '100%', 'note' => 'Clean portfolio score'],
+                    ['label' => 'Borrowers', 'value' => number_format($metrics['borrowers']), 'note' => 'Active customer records'],
+                    ['label' => 'Active Loans', 'value' => number_format($metrics['active_loans']), 'note' => 'Currently disbursed'],
+                    ['label' => 'OLB Total', 'value' => 'Ksh'.number_format($metrics['outstanding_balance'], 2), 'note' => 'Outstanding loan balance'],
+                    ['label' => 'Portfolio Quality', 'value' => $metrics['portfolio_quality'].'%', 'note' => 'Clean portfolio score'],
                 ] as $metric)
                     <article class="metric-card">
                         <span>{{ $metric['label'] }}</span>
@@ -70,8 +70,8 @@
                     </div>
                     <div class="gauge">1%<small>% Funded</small></div>
                     <div class="stacked-stats">
-                        <p><strong>0</strong> New borrowers</p>
-                        <p><strong>0</strong> Disbursed loans</p>
+                        <p><strong>{{ number_format($metrics['borrowers']) }}</strong> Total borrowers</p>
+                        <p><strong>{{ number_format($metrics['active_loans']) }}</strong> Active loans</p>
                         <p><strong>0</strong> Declined loans</p>
                     </div>
                 </article>
@@ -82,9 +82,9 @@
                         <span>Total CR: 0.00%</span>
                     </div>
                     <div class="mini-grid">
-                        <p><strong>Ksh0.00</strong><small>Total due - 0</small></p>
+                        <p><strong>Ksh{{ number_format($metrics['due_today'], 2) }}</strong><small>Total due today</small></p>
                         <p><strong>Ksh0.00</strong><small>Prepaid - 0</small></p>
-                        <p><strong>Ksh0.00</strong><small>Paid Today - 0</small></p>
+                        <p><strong>Ksh{{ number_format($metrics['paid_today'], 2) }}</strong><small>Paid today</small></p>
                         <p><strong>Ksh0.00</strong><small>Unpaid Due - 0</small></p>
                         <p><strong>Ksh0.00</strong><small>Arrears Collected - 0</small></p>
                         <p><strong>Ksh0.00</strong><small>Prepayments - 0</small></p>
@@ -96,21 +96,21 @@
                         <h2>Workflow</h2>
                     </div>
                     <div class="workflow-row">
-                        <span><strong>1</strong> Initiator</span>
-                        <span><strong>1</strong> Authorizer</span>
-                        <span><strong>3</strong> Validator</span>
+                        <span><strong>{{ number_format($metrics['workflow']['initiator']) }}</strong> Initiator</span>
+                        <span><strong>{{ number_format($metrics['workflow']['authorizer']) }}</strong> Authorizer</span>
+                        <span><strong>{{ number_format($metrics['workflow']['validator']) }}</strong> Validator</span>
                     </div>
                 </article>
 
                 <article class="panel risk-panel">
                     <div class="panel-title">
                         <h2>Risk</h2>
-                        <span>PAR: 0%</span>
+                        <span>PAR: {{ $metrics['portfolio_at_risk'] }}%</span>
                     </div>
                     <div class="risk-layout">
-                        <div class="gauge danger">0%<small>PAR</small></div>
+                        <div class="gauge danger">{{ $metrics['portfolio_at_risk'] }}%<small>PAR</small></div>
                         <div class="stacked-stats">
-                            <p><strong>Ksh0.00</strong> Total arrears</p>
+                            <p><strong>Ksh{{ number_format($metrics['arrears_amount'], 2) }}</strong> Total arrears</p>
                             <p><strong>Ksh392,501.31</strong> Total NPL - 12 loans</p>
                             <p><strong>Ksh0.00</strong> NPL collected today</p>
                         </div>

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -22,6 +24,7 @@ class DashboardTest extends TestCase
         $this->withoutVite();
 
         $user = User::factory()->create();
+        $this->grant($user, 'dashboard.view');
 
         $response = $this->actingAs($user)->get('/');
 
@@ -29,5 +32,20 @@ class DashboardTest extends TestCase
         $response->assertSee('Loan Suite');
         $response->assertHeader('X-Frame-Options', 'SAMEORIGIN');
         $response->assertHeader('X-Content-Type-Options', 'nosniff');
+    }
+
+    private function grant(User $user, string $permission): void
+    {
+        $role = Role::create([
+            'name' => 'test-'.str_replace('.', '-', $permission),
+            'display_name' => 'Test role',
+        ]);
+        $perm = Permission::create([
+            'key' => $permission,
+            'module' => 'Testing',
+            'name' => $permission,
+        ]);
+        $role->permissions()->attach($perm);
+        $user->roles()->attach($role);
     }
 }

@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\PaymentRequest;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -31,6 +33,7 @@ class MpesaPaymentTest extends TestCase
         config()->set('services.mpesa.callback_url', 'https://example.com/mpesa/stk/callback');
 
         $user = User::factory()->create();
+        $this->grant($user, 'payments.manage');
 
         $response = $this->actingAs($user)->post('/payments/mpesa', [
             'phone_number' => '0712345678',
@@ -99,5 +102,20 @@ class MpesaPaymentTest extends TestCase
     public function test_mpesa_payment_page_requires_authentication(): void
     {
         $this->get('/payments/mpesa')->assertRedirect('/login');
+    }
+
+    private function grant(User $user, string $permission): void
+    {
+        $role = Role::create([
+            'name' => 'test-'.str_replace('.', '-', $permission),
+            'display_name' => 'Test role',
+        ]);
+        $perm = Permission::create([
+            'key' => $permission,
+            'module' => 'Testing',
+            'name' => $permission,
+        ]);
+        $role->permissions()->attach($perm);
+        $user->roles()->attach($role);
     }
 }

@@ -514,3 +514,21 @@ Every task must pass this gate before it is considered complete:
 **Acceptance checks**
 
 - All test gates pass before final deployment.
+
+## Autonomous sprint progress - 2026-06-02
+
+Implemented in this sprint:
+
+- Started `TASK-AUTH-002` with route permission middleware, user permission resolution through roles, and protected module routes.
+- Started `TASK-DASH-001` with dynamic dashboard metric service for borrower counts, active loans, OLB, due today, paid today, arrears, PAR, payment requests, and workflow queues.
+- Started `TASK-BOR-001` with borrower list/search by name, account number, phone, and ID number.
+- Started `TASK-BOR-002` with borrower onboarding, generated account numbers, validation, assigned user, and audit logging.
+- Started `TASK-PROD-001` with loan product list/create flows, validation, status defaults, and audit logging.
+
+Next recommended autonomous sprint:
+
+1. Complete `TASK-AUTH-002` with reusable policies and user-role management UI.
+2. Continue `TASK-BOR-003` borrower document upload/verification.
+3. Continue `TASK-LOAN-001` loan application creation.
+4. Continue `TASK-LOAN-002` loan calculator and schedule preview.
+5. Continue `TASK-LOAN-003` approval workflow.

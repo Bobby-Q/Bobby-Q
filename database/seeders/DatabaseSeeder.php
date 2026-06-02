@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'loans.initiate', 'module' => 'Loans', 'name' => 'Initiate loan applications'],
             ['key' => 'loans.approve', 'module' => 'Approvals', 'name' => 'Approve loan applications'],
             ['key' => 'collections.manage', 'module' => 'Collections', 'name' => 'Record repayments and collections'],
+            ['key' => 'payments.manage', 'module' => 'Payments', 'name' => 'Manage payment requests'],
             ['key' => 'reports.view', 'module' => 'Reports', 'name' => 'View reports'],
             ['key' => 'users.manage', 'module' => 'Users', 'name' => 'Manage users and roles'],
             ['key' => 'settings.manage', 'module' => 'Settings', 'name' => 'Manage system settings'],

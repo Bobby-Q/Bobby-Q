@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureUserHasPermission;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,6 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
             SecurityHeaders::class,
+        ]);
+
+        $middleware->alias([
+            'permission' => EnsureUserHasPermission::class,
         ]);
 
         $middleware->validateCsrfTokens(except: [

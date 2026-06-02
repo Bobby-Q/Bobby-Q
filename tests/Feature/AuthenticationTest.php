@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -32,6 +34,8 @@ class AuthenticationTest extends TestCase
             'is_locked' => false,
         ]);
 
+        $this->grant($user, 'dashboard.view');
+
         $response = $this->post('/login', [
             'email' => 'admin@example.com',
             'password' => 'SecurePass#2026',
@@ -59,5 +63,20 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect('/login');
         $response->assertSessionHasErrors('email');
         $this->assertGuest();
+    }
+
+    private function grant(User $user, string $permission): void
+    {
+        $role = Role::create([
+            'name' => 'test-'.str_replace('.', '-', $permission),
+            'display_name' => 'Test role',
+        ]);
+        $perm = Permission::create([
+            'key' => $permission,
+            'module' => 'Testing',
+            'name' => $permission,
+        ]);
+        $role->permissions()->attach($perm);
+        $user->roles()->attach($role);
     }
 }
