@@ -66,6 +66,7 @@ Change these in the server `.env` before running seeders in production. Then sig
 ## Documentation
 
 - [`docs/service-suite-discovery.md`](docs/service-suite-discovery.md) - notes from the authenticated exploration of the reference application.
+- [`docs/service-suite-implementation-tasks.md`](docs/service-suite-implementation-tasks.md) - task board that breaks the full Service Suite discovery scope into separate implementation PR-sized tasks.
 - [`docs/architecture.md`](docs/architecture.md) - Laravel + MySQL architecture, security principles, build order, and future integrations.
 - [`docs/cpanel-deployment.md`](docs/cpanel-deployment.md) - production deployment notes for `suite.maur.co.ke`.
 

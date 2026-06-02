@@ -907,6 +907,11 @@ The first working MVP should include:
 
 Inventory, cash sales, SMS billing, AI assistant, bulk payment approvals, and advanced accounting can come after the core lending workflow is stable.
 
+
+## Implementation task board
+
+The complete discovery scope has been split into PR-sized implementation tasks in `docs/service-suite-implementation-tasks.md`. That task board is the coordination document for parallel branches, shared integration, acceptance checks, and the whole-app test gate.
+
 ## Implementation progress - payments phase
 
 The current Loan Suite implementation has started the Payments module from the discovery findings:
